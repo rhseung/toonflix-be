@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
 @Injectable()
 export class UsersService {
-  private prisma = new PrismaClient();
+  private prisma = new PrismaClient().$extends(withAccelerate());
 
   async create(user: CreateUserDto) {
     return await this.prisma.user.create({ data: { ...user } });

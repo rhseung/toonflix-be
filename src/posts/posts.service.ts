@@ -3,10 +3,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { UsersService } from '../users/users.service';
 import { PrismaClient } from '@prisma/client';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
 @Injectable()
 export class PostsService {
-  private prisma = new PrismaClient();
+  private prisma = new PrismaClient().$extends(withAccelerate());
 
   constructor(private readonly usersService: UsersService) {}
 
