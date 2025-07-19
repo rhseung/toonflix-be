@@ -30,22 +30,21 @@ export class UsersController {
     return await this.usersService.read();
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiParam({ name: 'id', type: Number })
   @Get(':id')
   async readById(@Param('id') id: number) {
     return await this.usersService.readById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiParam({ name: 'id', type: Number })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: number, @Body() user: UpdateUserDto) {
     return await this.usersService.update(id, user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiParam({ name: 'id', type: Number })
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return await this.usersService.delete(id);
