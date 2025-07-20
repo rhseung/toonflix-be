@@ -6,13 +6,12 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('users')
@@ -29,7 +28,7 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'Not Found: User not found' })
   @ApiParam({ name: 'id', type: Number })
   @UseGuards(JwtAuthGuard)
-  @Get('id/:id')
+  @Get(':id')
   async readById(@Param('id') id: number) {
     return await this.usersService.readById(id);
   }
@@ -48,17 +47,17 @@ export class UsersController {
     return await this.usersService.read();
   }
 
-  @ApiQuery({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(JwtAuthGuard)
-  @Patch()
-  async update(@Query('id') id: number, @Body() user: UpdateUserDto) {
+  @Patch(':id')
+  async update(@Param('id') id: number, @Body() user: UpdateUserDto) {
     return await this.usersService.update(id, user);
   }
 
-  @ApiQuery({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: Number })
   @UseGuards(JwtAuthGuard)
-  @Delete()
-  async delete(@Query('id') id: number) {
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
     return await this.usersService.delete(id);
   }
 }
