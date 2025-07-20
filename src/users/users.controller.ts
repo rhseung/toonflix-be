@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
+import { UserId } from './users.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -23,6 +24,13 @@ export class UsersController {
   @Post()
   async create(@Body() user: CreateUserDto) {
     return await this.usersService.create(user);
+  }
+
+  @ApiResponse({ status: 401, description: 'Unauthorized: Invalid token' })
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async me(@UserId() userId: number) {
+    return await this.usersService.readMe(userId);
   }
 
   @ApiResponse({ status: 404, description: 'Not Found: User not found' })

@@ -48,6 +48,22 @@ export class UsersService {
     return await this.prisma.user.findMany();
   }
 
+  async readMe(userId: number) {
+    try {
+      return await this.prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          // password는 제외
+        },
+      });
+    } catch {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+  }
+
   async readById(id: number) {
     try {
       return await this.prisma.user.findUniqueOrThrow({ where: { id } });

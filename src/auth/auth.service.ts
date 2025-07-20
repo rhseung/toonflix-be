@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import { Payload } from './jwt/jwt.payload';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +28,14 @@ export class AuthService {
         );
       }
 
+      const payload: Payload = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      };
+
       return {
-        accessToken: this.jwtService.sign(user),
+        accessToken: this.jwtService.sign(payload),
       };
     } catch (error) {
       // 사용자가 존재하지 않으면 NotFoundException을 뱉는게 맞지만,
