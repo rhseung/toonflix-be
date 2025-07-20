@@ -1,15 +1,19 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { LoginDataDto } from './dto/login-data.dto';
+import { UserDataDto } from './dto/user-data.dto';
 import { AuthService } from './auth.service';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiBody({ type: LoginDataDto })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized: Invalid email or password',
+  })
+  @ApiBody({ type: UserDataDto })
   @Post('login')
-  login(@Body() loginData: LoginDataDto) {
+  login(@Body() loginData: UserDataDto) {
     return this.authService.login(loginData);
   }
 }
